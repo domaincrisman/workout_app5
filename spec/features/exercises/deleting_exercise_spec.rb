@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.feature "Editing Exercise" do
+RSpec.feature "Deleting Exercise" do
    
   before do
     @john = User.create!(email: "owner@example.com", password: "password")
@@ -12,22 +12,18 @@ RSpec.feature "Editing Exercise" do
     
   end
   
-  scenario "with valid data succeeds" do
+  scenario do
     
     visit "/"
     
     click_link "My Lounge"
     
-    path = "users/#{@owner.id}/exercises/#{@owner_exercise.id}/edit"
-    link = "a[href= \'#{path}\']"
-    find(link).click
+    path = "users/#{@owner.id}/exercises/#{@owner_exercise.id}"
+    link = "//a[contains(@href,\'#{path}\') and .//text()='Destroy']"
     
-    fill_in "Duration", with: 45
-    click_button "Update Exercise"
+    find(:xpath, link).click
     
-    expect(page).to have_content("Exercise has been updated")
-    expect(page).to have_content(45)
-    expect(page).not_to have_content(48)
+    expect(page).to have_content("Exercise has been deleted")
     
   end
 end
