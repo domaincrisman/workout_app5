@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $('#exercise_workout_date').datepicker({ dateformat: 'yy-mm-dd'});
+  $("#exercise_workout_date").datepicker({ dateFormat: 'yy-mm-dd' });
   
   var regex = /\/users\/\d+\/exercises$|\/friendships\/d+$/i;
 
