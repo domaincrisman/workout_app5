@@ -1,6 +1,7 @@
 class ExercisesController < ApplicationController
- before_action :set_exercise, only: [:show, :edit, :update, :destroy]
-  
+  before_action :authenticate_user!
+  before_action :set_exercise, only: [:show, :edit, :update, :destroy]
+ 
   def index
     @exercises = current_user.exercises
     @friends = current_user.friends
@@ -10,7 +11,7 @@ class ExercisesController < ApplicationController
     @followers = Friendship.where(friend_id: current_user.id)
   end
   
-  def show 
+  def show
   end
   
   def new
@@ -24,7 +25,7 @@ class ExercisesController < ApplicationController
       flash[:notice] = "Exercise has been created"
       redirect_to [current_user, @exercise]
     else
-      flash.now[:notice] = "Exercise has not been created"
+      flash.now[:alert] = "Exercise has not been created"
       render :new
     end
   end
@@ -40,7 +41,6 @@ class ExercisesController < ApplicationController
       flash[:alert] = "Exercise has not been updated"
       render :edit
     end
-    
   end
   
   def destroy
@@ -50,22 +50,21 @@ class ExercisesController < ApplicationController
   end
   
   private
-    
-    def set_exercise
-      @exercise = current_user.exercises.find params[:id]
-    end
-    
-    def exercise_params
-      params.require(:exercise).permit(:duration_in_min, :workout, :workout_date, :user_id)
-    end
-    
-    def set_current_room
-      if params[:roomId]
-        @room = Room.find_by(id: params[:roomId])
-      else
-        @room = current_user.room
-      end
-      session[:current_room] = @room.id if @room
-    end
   
+  def set_exercise
+    @exercise = current_user.exercises.find params[:id]
+  end
+  
+  def exercise_params
+    params.require(:exercise).permit(:duration_in_min, :workout, :workout_date, :user_id)
+  end
+  
+  def set_current_room
+    if params[:roomId]
+      @room = Room.find_by(id: params[:roomId])
+    else
+      @room = current_user.room
+    end
+    session[:current_room] = @room.id if @room
+  end
 end
