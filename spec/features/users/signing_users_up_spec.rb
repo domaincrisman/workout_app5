@@ -24,7 +24,7 @@ RSpec.feature "Users signup" do
     expect(page).to have_content("John Doe")
   end
   
-  scenario "with valid credentials" do
+  scenario "with invalid credentials" do
     visit "/"
    
     click_link "Sign up"
@@ -38,4 +38,5 @@ RSpec.feature "Users signup" do
     expect(page).to have_content("First name can't be blank")
     expect(page).to have_content("Last name can't be blank")
   end
+  
 end
